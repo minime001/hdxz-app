@@ -30,7 +30,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // 翻譯為繁體中文，並補全圖片資訊
+  // 魚類與鳥類資料清單
   final List<Map<String, dynamic>> items = [
     {
       "name": "螢光小魚",
@@ -84,7 +84,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 使用與照片相同的淡藍色背景
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -95,18 +94,13 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           children: [
-            // 頂部標題列 (仿照片樣式)
+            // 頂部標題列 (已移除左上角箭頭)
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 child: Row(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(color: Colors.white54, shape: BoxShape.circle),
-                      child: const Icon(Icons.arrow_back_ios_new, size: 20, color: Colors.blueGrey),
-                    ),
-                    const SizedBox(width: 15),
+                    // 這裡原本的 Icon 和 SizedBox 已經被刪除了
                     const Text(
                       '心動小鎮全圖鑑',
                       style: TextStyle(
@@ -132,8 +126,8 @@ class _HomePageState extends State<HomePage> {
                     margin: const EdgeInsets.only(bottom: 15),
                     height: 110,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFFDF2), // 奶油米白背景
-                      borderRadius: BorderRadius.circular(30), // 超大圓角
+                      color: const Color(0xFFFFFDF2),
+                      borderRadius: BorderRadius.circular(30),
                       border: Border.all(color: const Color(0xFFE0D5B1), width: 2.5),
                       boxShadow: [
                         BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 12, offset: const Offset(0, 5))
@@ -163,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                         
-                        // 中間文字資訊 (繁體中文)
+                        // 中間文字資訊
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -174,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w900,
-                                  color: Color(0xFF5D4037), // 深咖啡色字
+                                  color: Color(0xFF5D4037),
                                 ),
                               ),
                               const SizedBox(height: 4),
@@ -186,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
 
-                        // 右側勾選框 (仿遊戲內綠色方塊)
+                        // 右側勾選框
                         GestureDetector(
                           onTap: () => _toggleObtained(index),
                           child: Container(
