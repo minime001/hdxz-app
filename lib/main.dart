@@ -11,14 +11,11 @@ class HdxzGuideApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '心動小鎮圖鑑',
+      title: '心動小鎮全圖鑑',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        // 設定全域字體顏色為深咖啡色，模仿遊戲質感
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Color(618149811)),
-          bodyMedium: TextStyle(color: Color(618149811)),
-        ),
+        fontFamily: 'PingFang TC', // 使用繁體中文常用字體
       ),
       home: const HomePage(),
     );
@@ -33,11 +30,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // 翻譯為繁體中文，並補全圖片資訊
   final List<Map<String, dynamic>> items = [
-    {"name": "螢光小魚", "category": "魚類", "obtained": false, "icon": Icons.sailing},
-    {"name": "彩虹陸龜", "category": "魚類", "obtained": false, "icon": Icons.waves},
-    {"name": "藍色小鳥", "category": "鳥類", "obtained": false, "icon": Icons.flutter_dash},
-    {"name": "紫光珊瑚魚", "category": "魚類", "obtained": false, "icon": Icons.water},
+    {
+      "name": "螢光小魚",
+      "category": "魚類",
+      "obtained": false,
+      "imgUrl": "https://cdn-icons-png.flaticon.com/512/2275/2275033.png"
+    },
+    {
+      "name": "藍色小魚",
+      "category": "魚類",
+      "obtained": false,
+      "imgUrl": "https://cdn-icons-png.flaticon.com/512/404/404803.png"
+    },
+    {
+      "name": "藍色小鳥",
+      "category": "鳥類",
+      "obtained": false,
+      "imgUrl": "https://cdn-icons-png.flaticon.com/512/2613/2613143.png"
+    },
+    {
+      "name": "彩色陸龜",
+      "category": "魚類",
+      "obtained": false,
+      "imgUrl": "https://cdn-icons-png.flaticon.com/512/2809/2809774.png"
+    },
   ];
 
   @override
@@ -66,115 +84,126 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // 1. 背景改為淡藍色漸層
+      // 使用與照片相同的淡藍色背景
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFB3E5FC), Color(0xFFE1F5FE)],
+            colors: [Color(0xFF81D4FA), Color(0xFFB3E5FC)],
           ),
         ),
         child: Column(
           children: [
-            // 自定義標題列
+            // 頂部標題列 (仿照片樣式)
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundColor: Colors.white70,
-                      child: Icon(Icons.arrow_back_ios_new, size: 18, color: Colors.blueGrey),
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(color: Colors.white54, shape: BoxShape.circle),
+                      child: const Icon(Icons.arrow_back_ios_new, size: 20, color: Colors.blueGrey),
                     ),
                     const SizedBox(width: 15),
-                    Text(
+                    const Text(
                       '心動小鎮全圖鑑',
                       style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900,
                         color: Colors.white,
-                        shadows: [Shadow(color: Colors.black26, blurRadius: 4, offset: Offset(1, 1))],
+                        letterSpacing: 1.2,
+                        shadows: [Shadow(color: Colors.black26, blurRadius: 8, offset: Offset(2, 2))],
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            
-            // 2. 圖鑑列表
+
+            // 圖鑑卡片列表
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 itemCount: items.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
+                    margin: const EdgeInsets.only(bottom: 15),
+                    height: 110,
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFFFDF7), // 奶油米白色
-                      borderRadius: BorderRadius.circular(20), // 大圓角
+                      color: const Color(0xFFFFFDF2), // 奶油米白背景
+                      borderRadius: BorderRadius.circular(30), // 超大圓角
+                      border: Border.all(color: const Color(0xFFE0D5B1), width: 2.5),
                       boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                        BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 12, offset: const Offset(0, 5))
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        // 左側圖示區
+                        Container(
+                          width: 85,
+                          height: 85,
+                          margin: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F0E1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(
+                              items[index]['imgUrl'],
+                              fit: BoxFit.contain,
+                              loadingBuilder: (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+                              },
+                            ),
+                          ),
+                        ),
+                        
+                        // 中間文字資訊 (繁體中文)
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                items[index]['name'],
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF5D4037), // 深咖啡色字
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                items[index]['category'],
+                                style: TextStyle(fontSize: 15, color: Colors.brown.withOpacity(0.6), fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // 右側勾選框 (仿遊戲內綠色方塊)
+                        GestureDetector(
+                          onTap: () => _toggleObtained(index),
+                          child: Container(
+                            width: 65,
+                            height: 65,
+                            margin: const EdgeInsets.only(right: 18),
+                            decoration: BoxDecoration(
+                              color: items[index]['obtained'] ? const Color(0xFF7CB342) : Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                              border: Border.all(color: const Color(0xFFE0D5B1), width: 3),
+                            ),
+                            child: items[index]['obtained']
+                                ? const Icon(Icons.check, color: Colors.white, size: 40)
+                                : null,
+                          ),
                         ),
                       ],
-                      border: Border.all(color: const Color(0xFFE0D8C3), width: 1), // 淡淡的邊框
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          // 左側圖示區域
-                          Container(
-                            width: 60,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFF0EAD6),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Icon(items[index]['icon'], color: Colors.blueGrey, size: 30),
-                          ),
-                          const SizedBox(width: 15),
-                          // 中間文字區域
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  items[index]['name'],
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF5D4037),
-                                  ),
-                                ),
-                                Text(
-                                  items[index]['category'],
-                                  style: const TextStyle(color: Colors.grey, fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // 右側勾選按鈕 (仿遊戲綠色勾選框)
-                          GestureDetector(
-                            onTap: () => _toggleObtained(index),
-                            child: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: items[index]['obtained'] ? const Color(0xFF81C784) : Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: const Color(0xFFE0D8C3), width: 2),
-                              ),
-                              child: items[index]['obtained']
-                                  ? const Icon(Icons.check, color: Colors.white)
-                                  : null,
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   );
                 },
